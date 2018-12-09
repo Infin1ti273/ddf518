@@ -1,4 +1,3 @@
-package bin;
 import javax.swing.*;
 import java.awt.*;
 /*fgd*/

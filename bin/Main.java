@@ -1,7 +1,4 @@
-package bin;
-
 import java.sql.*;
-
 
 public class Main{
     private static Interface rua = new Interface();
