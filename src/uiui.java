@@ -3,6 +3,8 @@ import java.awt.event.*;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.sql.*;
+
 /**/
 public class uiui extends JFrame implements ActionListener{
 
@@ -211,8 +213,46 @@ public class uiui extends JFrame implements ActionListener{
             select(sql);
         }
     }
+
     public static void main (String[] args) {
         uiui frame = new uiui();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private static void select(String sql){
+        Connection conn = getConnection();
+        PreparedStatement pstmt;
+        try{
+            pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            int col = rs.getMetaData().getColumnCount();
+            System.out.println("***********************");
+            while (rs.next()){
+                for(int i = 1; i <= col; i++) {
+                    System.out.print(rs.getString(i) + "\t");
+                    if ((i == 2) && (rs.getString(i).length() < 8)) {
+                        System.out.print("\t");
+                    }
+                }
+            }
+            System.out.println("\n***********************");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    private static Connection getConnection() {
+        String driver = "com.mysql.cj.jdbc.Driver";
+        String url = "jdbc:mysql://localhost:3306/db?characterEncoding=utf8&useSSL=false";
+        String username = "root";
+        String password = "";
+        Connection conn = null;
+        try {
+            Class.forName(driver);                                      //classLoader
+            conn = DriverManager.getConnection(url, username, password);
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        return conn;
     }
 }
