@@ -2,11 +2,14 @@
 <module type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/bin" isTestSource="false" />
+    <content url="file://$MODULE_DIR$/../uiui">
+      <sourceFolder url="file://$MODULE_DIR$/../uiui/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../uiui/bin" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/../uiui" type="java-resource" />
     </content>
+    <content url="file://$MODULE_DIR$/../uiui/out" />
     <orderEntry type="inheritedJdk" />
+    <orderEntry type="library" exported="" name="mysql-connector-java-8.0.12" level="project" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
