@@ -60,8 +60,156 @@ public class uiui extends JFrame implements ActionListener{
         this.setVisible(true);
     }
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent x) {
+        String sql;
 
+        if(x.getSource()==a)
+        {
+            sql = "select hallId,staffName.name,hall.tel from hall\n" +
+                    "join staff\n" +
+                    "  on hall.managerId = staff.staffId\n" +
+                    "join staffName\n" +
+                    "  on staff.staffId = staffName.staffId;";
+            select(sql);
+        }
+        if(x.getSource()==b)
+        {
+            sql = "select students.studentId,studentName,lease.* from students\n" +
+                    "left join stuName\n" +
+                    "  on students.studentId = stuName.studentId\n" +
+                    "left join lease\n" +
+                    "  on students.studentId = lease.studentId;";
+            select(sql);
+        }
+        if(x.getSource()==c)
+        {
+            sql = "select * from lease\n" +
+                    "  where (\n" +
+                    "    (\n" +
+                    "      year(enterDate) = year(leaveDate)\n" +
+                    "      and month(leaveDate) = 3\n" +
+                    "      )\n" +
+                    "    or\n" +
+                    "    (\n" +
+                    "      year(enterDate) != year(leaveDate)\n" +
+                    "      and (\n" +
+                    "        month(enterDate) = 3\n" +
+                    "      or\n" +
+                    "        year(leaveDate) - year(enterDate) > 1\n" +
+                    "        )\n" +
+                    "     )\n" +
+                    "    );";
+            select(sql);
+        }
+        if(x.getSource()==d)
+        {
+            sql = "select studentName,pamentDue from students\n" +
+                    "left join stuName\n" +
+                    "  on students.studentId = stuName.studentId\n" +
+                    "left join lease\n" +
+                    "  on students.studentId = lease.studentId\n" +
+                    "left join invoice\n" +
+                    "  on lease.leaseNo = invoice.leaseNo\n" +
+                    "where studentName = 'Fan.A';";
+            select(sql);
+        }
+        if(x.getSource()==e)
+        {
+            sql = "select studentName,leaveDate from students\n" +
+                    "left join stuName\n" +
+                    "  on students.studentId = stuName.studentId\n" +
+                    "left join lease\n" +
+                    "  on students.studentId = lease.studentId\n" +
+                    "left join invoice\n" +
+                    "  on lease.leaseNo = invoice.leaseNo\n" +
+                    "where status = 'waiting'\n" +
+                    "  and lease.leaseNo is not null\n" +
+                    "      and paidDate is null;";
+            select(sql);
+        }
+        if(x.getSource()==f)
+        {
+            sql = "select * from inspection\n" +
+                    "where satisfactory = 'no';";
+            select(sql);
+        }
+        if(x.getSource()==g)
+        {
+            sql = "select studentName,students.studentId,allRooms.placeNo,roomNo from students\n" +
+                    "join stuName\n" +
+                    "  on students.studentId = stuName.studentId\n" +
+                    "join lease\n" +
+                    "  on students.studentId = lease.studentId\n" +
+                    "join allRooms\n" +
+                    "  on lease.placeNo = allRooms.placeNo\n" +
+                    "join hallRoom\n" +
+                    "  on allRooms.placeNo = hallRoom.placeNo;\n";
+            select(sql);
+        }
+        if(x.getSource()==h)
+        {
+            sql = "select studentName,students.studentId,allRooms.placeNo,roomNo from students\n" +
+                    "join stuName\n" +
+                    "  on students.studentId = stuName.studentId\n" +
+                    "join lease\n" +
+                    "  on students.studentId = lease.studentId\n" +
+                    "join allRooms\n" +
+                    "  on lease.placeNo = allRooms.placeNo\n" +
+                    "join hallRoom\n" +
+                    "  on allRooms.placeNo = hallRoom.placeNo;\n";
+            select(sql);
+        }
+        if(x.getSource()==i)
+        {
+            sql = "select studentName,students.* from students\n" +
+                    "join stuName\n" +
+                    "  on students.studentId = stuName.studentId\n" +
+                    "where status = 'waiting';";
+            select(sql);
+        }
+        if(x.getSource()==j)
+        {
+            sql = "select category,count(category) from students\n" +
+                    "group by category;";
+            select(sql);
+        }
+        if(x.getSource()==k)
+        {
+            sql = "select students.studentId,studentName from students\n" +
+                    "join stuName\n" +
+                    "  on students.studentId = stuName.studentId\n" +
+                    "where not exists(\n" +
+                    "  select * from kinList\n" +
+                    "  where students.studentId = kinList.studentId\n" +
+                    "  );";
+            select(sql);
+        }
+        if(x.getSource()==l)
+        {
+            sql = "select studentName,stuAdvisor.advisor,officeRoom.internalTel from students\n" +
+                    "join stuName\n" +
+                    "  on students.studentId = stuName.studentId\n" +
+                    "join stuAdvisor\n" +
+                    "  on students.studentId = stuAdvisor.studentId\n" +
+                    "join advisor\n" +
+                    "  on stuAdvisor.advisor = advisor.name\n" +
+                    "join officeRoom\n" +
+                    "  on advisor.roomNo = officeRoom.roomNo;";
+            select(sql);
+        }
+        if(x.getSource()==m)
+        {
+            sql = "select min(rentRate),max(rentRate),avg(rentRate) from allRooms;";
+            select(sql);
+        }
+        if(x.getSource()==n)
+        {
+            sql = "select staff.staffId,name,timestampdiff(year,birthDate,curdate()) as age,location from staff\n" +
+                    "join staffName\n" +
+                    "  on staff.staffId = staffName.staffId\n" +
+                    "where timestampdiff(year,birthDate,curdate()) >= 60;";
+            select(sql);
+        }
     }
     public static void main (String[] args) {
         uiui frame = new uiui();
