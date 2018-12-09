@@ -3,7 +3,7 @@ import java.awt.event.*;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-
+/**/
 public class uiui extends JFrame implements ActionListener{
 
     JPanel panel = new JPanel();
