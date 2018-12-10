@@ -175,7 +175,6 @@ public class Uiui extends JFrame implements ActionListener {
             header="Name Student_No PlaceNo RoomNo";
             select(header,sql);
         }
-
         if (x.getSource() == h) {
             sql = "select studentName,students.* from students\n" +
                     "join stuName\n" +
