@@ -7,20 +7,20 @@ import java.sql.*;
 public class Uiui extends JFrame implements ActionListener {
 
     private static JLabel tx = new JLabel();
-    private JButton a = new JButton("Hall info");
+    private JButton a = new JButton("Hall and manager");
     private JButton b = new JButton("Lease detail for every student");
-    private JButton c = new JButton("lease detail;summer semester");
-    private JButton d = new JButton("total rent paid of a given stud");
-    private JButton e = new JButton("studs:not paid invoice+given date");
-    private JButton f = new JButton("inspections:unsatisfieconfigurationd");
-    private JButton g = new JButton("name+studID:given roomNo+plcNo in hall");
-    private JButton h = new JButton("stud:waiting");
-    private JButton i = new JButton("total number of stud in each cata");
-    private JButton j = new JButton("name+studNo:have no kin");
-    private JButton k = new JButton("name+intertel of advisor:a given stud");
-    private JButton l = new JButton("min,max,ave Mrent of hall");
+    private JButton c = new JButton("Lease detail at summer semester");
+    private JButton d = new JButton("Total rent paid of students");
+    private JButton e = new JButton("Students who did not paid invoice");
+    private JButton f = new JButton("Inspections of unsatisfied configuration");
+    private JButton g = new JButton("Students and their room number");
+    private JButton h = new JButton("Students who is waiting");
+    private JButton i = new JButton("Total number of students in each catalog");
+    private JButton j = new JButton("Students who have no kin");
+    private JButton k = new JButton("Advisors for each student");
+    private JButton l = new JButton("Minimal, maximal and average rent of hall");
     private JButton m = new JButton("Total number of places in each hall");
-    private JButton n = new JButton("staffNo,name,age,location:age>60");
+    private JButton n = new JButton("Staff details for those who are over 60 years old");
 
     static class Sub_ui extends JFrame implements ActionListener {
         JTextArea input = new JTextArea();
@@ -28,7 +28,7 @@ public class Uiui extends JFrame implements ActionListener {
         GridLayout l2 = new GridLayout(2,1);
         private Sub_ui(){
             this.setTitle("Extra Searching");
-            this.setSize(400,400);
+            this.setSize(400,300);
             this.setLayout(l2);
             this.add(input);
             this.add(ex);
