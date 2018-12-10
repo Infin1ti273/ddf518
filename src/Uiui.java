@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -7,24 +6,21 @@ import java.sql.*;
 /**/
 public class Uiui extends JFrame implements ActionListener {
 
-    GridLayout l1 = new GridLayout(2,1);
-    JPanel j1 = new JPanel(new GridLayout(14,1));
-    JPanel j2 = new JPanel(new FlowLayout());
-    static JLabel tx = new JLabel();
-    JButton a = new JButton("Hall info");
-    JButton b = new JButton("Lease detail for every student");
-    JButton c = new JButton("lease detail;summer semester");
-    JButton d = new JButton("total rent paid of a given stud");
-    JButton e = new JButton("studs:not paid invoice+given date");
-    JButton f = new JButton("inspections:unsatisfieconfigurationd");
-    JButton g = new JButton("name+studID:given roomNo+plcNo in hall");
-    JButton h = new JButton("stud:waiting");
-    JButton i = new JButton("total number of stud in each cata");
-    JButton j = new JButton("name+studNo:have no kin");
-    JButton k = new JButton("name+intertel of advisor:a given stud");
-    JButton l = new JButton("min,max,ave Mrent of hall");
-    JButton m = new JButton("Total number of places in each hall");
-    JButton n = new JButton("staffNo,name,age,location:age>60");
+    private static JLabel tx = new JLabel();
+    private JButton a = new JButton("Hall info");
+    private JButton b = new JButton("Lease detail for every student");
+    private JButton c = new JButton("lease detail;summer semester");
+    private JButton d = new JButton("total rent paid of a given stud");
+    private JButton e = new JButton("studs:not paid invoice+given date");
+    private JButton f = new JButton("inspections:unsatisfieconfigurationd");
+    private JButton g = new JButton("name+studID:given roomNo+plcNo in hall");
+    private JButton h = new JButton("stud:waiting");
+    private JButton i = new JButton("total number of stud in each cata");
+    private JButton j = new JButton("name+studNo:have no kin");
+    private JButton k = new JButton("name+intertel of advisor:a given stud");
+    private JButton l = new JButton("min,max,ave Mrent of hall");
+    private JButton m = new JButton("Total number of places in each hall");
+    private JButton n = new JButton("staffNo,name,age,location:age>60");
 
     static class Sub_ui extends JFrame implements ActionListener {
         JTextArea input = new JTextArea();
@@ -42,15 +38,18 @@ public class Uiui extends JFrame implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            System.out.println(input.getText());
+            Uiui.select(input.getText());
             input.setText("");
         }
     }
     private Uiui() {
         this.setTitle("Database User Interface");
         this.setSize(1000, 800);
+        GridLayout l1 = new GridLayout(2, 1);
         this.setLayout(l1);
+        JPanel j2 = new JPanel(new FlowLayout());
         this.add(j2);
+        JPanel j1 = new JPanel(new GridLayout(14, 1));
         this.add(j1);
 
         a.addActionListener(this);
@@ -225,7 +224,6 @@ public class Uiui extends JFrame implements ActionListener {
         }
         if (x.getSource() == l) {
             sql = "select min(rentRate) as Minimal_Rent,max(rentRate) as Maximum_rent,avg(rentRate) as Average_Rent from allRooms;";
-            header="Minimal_Rent Maximum_rent Average_Rent";
             select(sql);
         }
         if (x.getSource() == m){
