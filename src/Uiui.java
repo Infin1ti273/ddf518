@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -7,30 +6,50 @@ import java.sql.*;
 /**/
 public class Uiui extends JFrame implements ActionListener {
 
-    GridLayout l1 = new GridLayout(2,1);
-    JPanel j1 = new JPanel(new GridLayout(14,1));
-    JPanel j2 = new JPanel(new FlowLayout());
-    static JLabel tx = new JLabel();
-    JButton a = new JButton("hallinfo:mng'name+tel");
-    JButton b = new JButton("lease detail:name+studNo");
-    JButton c = new JButton("lease detail;summer semester");
-    JButton d = new JButton("total rent paid of a given stud");
-    JButton e = new JButton("studs:not paid invoice+given date");
-    JButton f = new JButton("inspections:unsatisfied");
-    JButton g = new JButton("name+studID:given roomNo+plcNo in hall");
-    JButton h = new JButton("stud:waiting");
-    JButton i = new JButton("total number of stud in each cata");
-    JButton j = new JButton("name+studNo:have no kin");
-    JButton k = new JButton("name+intertel of advisor:a given stud");
-    JButton l = new JButton("min,max,ave Mrent of hall");
-    JButton m = new JButton("Total number of places in each hall");
-    JButton n = new JButton("staffNo,name,age,location:age>60");
+    private static JLabel tx = new JLabel();
+    private JButton a = new JButton("Hall and manager");
+    private JButton b = new JButton("Lease detail for every student");
+    private JButton c = new JButton("Lease detail at summer semester");
+    private JButton d = new JButton("Total rent paid of students");
+    private JButton e = new JButton("Students who did not paid invoice");
+    private JButton f = new JButton("Inspections of unsatisfied configuration");
+    private JButton g = new JButton("Students and their room number");
+    private JButton h = new JButton("Students who is waiting");
+    private JButton i = new JButton("Total number of students in each catalog");
+    private JButton j = new JButton("Students who have no kin");
+    private JButton k = new JButton("Advisors for each student");
+    private JButton l = new JButton("Minimal, maximal and average rent of hall");
+    private JButton m = new JButton("Total number of places in each hall");
+    private JButton n = new JButton("Staff details for those who are over 60 years old");
 
+    static class Sub_ui extends JFrame implements ActionListener {
+        JTextArea input = new JTextArea();
+        JButton ex = new JButton("SQL Search");
+        GridLayout l2 = new GridLayout(2,1);
+        private Sub_ui(){
+            this.setTitle("Extra Searching");
+            this.setSize(400,300);
+            this.setLayout(l2);
+            this.add(input);
+            this.add(ex);
+            ex.addActionListener(this);
+            this.setVisible(true);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            Uiui.select(input.getText());
+            input.setText("");
+        }
+    }
     private Uiui() {
         this.setTitle("Database User Interface");
         this.setSize(1000, 800);
+        GridLayout l1 = new GridLayout(2, 1);
         this.setLayout(l1);
+        JPanel j2 = new JPanel(new FlowLayout());
         this.add(j2);
+        JPanel j1 = new JPanel(new GridLayout(14, 1));
         this.add(j1);
 
         a.addActionListener(this);
@@ -71,6 +90,7 @@ public class Uiui extends JFrame implements ActionListener {
 
     public static void main(String[] args) {
         Uiui frame = new Uiui();
+        new Sub_ui();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
@@ -94,22 +114,20 @@ public class Uiui extends JFrame implements ActionListener {
         String sql;
         String header;
         if (x.getSource() == a) {
-            sql = "select hallId,staffName.name,hall.tel from hall\n" +
+            sql = "select hallId,staffName.name as Manager,hall.tel as Hall_Tel from hall\n" +
                     "join staff\n" +
                     "  on hall.managerId = staff.staffId\n" +
                     "join staffName\n" +
                     "  on staff.staffId = staffName.staffId;";
-            header="Hall_ID Manager Hall_Tel";
-            select(header,sql);
+            select(sql);
         }
         if (x.getSource() == b) {
-            sql = "select students.studentId,studentName,leaseNo, duration, placeNo, enterDate, leaveDate from students\n" +
+            sql = "select students.studentId as Student_No,studentName,leaseNo,duration,placeNo,enterDate,leaveDate from students\n" +
                     "left join stuName\n" +
                     "  on students.studentId = stuName.studentId\n" +
                     "left join lease\n" +
                     "  on students.studentId = lease.studentId;";
-            header="Student_No Name Lease_No Duration PlaceNo EnterDate LeaveDate";
-            select(header,sql);
+            select(sql);
         }
         if (x.getSource() == c) {
             sql = "select * from lease\n" +
@@ -128,22 +146,20 @@ public class Uiui extends JFrame implements ActionListener {
                     "        )\n" +
                     "     )\n" +
                     "    );";
-            header="Lease_No Student_No Duration PlaceNo EnterDate LeaveDate";
-            select(header,sql);
+            select(sql);
         }
         if (x.getSource() == d) {
-            sql = "select studentName,pamentDue from students\n" +
+            sql = "select studentName,pamentDue as TotalPayment from students\n" +
                     "left join stuName\n" +
                     "  on students.studentId = stuName.studentId\n" +
                     "left join lease\n" +
                     "  on students.studentId = lease.studentId\n" +
                     "left join invoice\n" +
                     "  on lease.leaseNo = invoice.leaseNo\n";
-            header="Student_Name TotalPayment";
-            select(header,sql);
+            select(sql);
         }
         if (x.getSource() == e) {
-            sql = "select studentName,leaveDate from students\n" +
+            sql = "select studentName,leaveDate as Last_Payment_Date from students\n" +
                     "left join stuName\n" +
                     "  on students.studentId = stuName.studentId\n" +
                     "left join lease\n" +
@@ -153,14 +169,12 @@ public class Uiui extends JFrame implements ActionListener {
                     "where status = 'waiting'\n" +
                     "  and lease.leaseNo is not null\n" +
                     "      and paidDate is null;";
-            header="Student_Name Last_Payment_Date";
-            select(header,sql);
+            select(sql);
         }
         if (x.getSource() == f) {
             sql = "select * from inspection\n" +
                     "where satisfactory = 'no';";
-            header="Inspection_No Staff_No Date Satisfactory Comment";
-            select(header,sql);
+            select(sql);
         }
         if (x.getSource() == g) {
             sql = "select studentName,students.studentId,allRooms.placeNo,roomNo from students\n" +
@@ -172,23 +186,19 @@ public class Uiui extends JFrame implements ActionListener {
                     "  on lease.placeNo = allRooms.placeNo\n" +
                     "join hallRoom\n" +
                     "  on allRooms.placeNo = hallRoom.placeNo;\n";
-            header="Name Student_No PlaceNo RoomNo";
-            select(header,sql);
+            select(sql);
         }
-
         if (x.getSource() == h) {
             sql = "select studentName,students.* from students\n" +
                     "join stuName\n" +
                     "  on students.studentId = stuName.studentId\n" +
                     "where status = 'waiting';";
-            header="Name Student_No BirthDate Sex Nationality Category Smoker Status SpecialNeed Comments";
-            select(header,sql);
+            select(sql);
         }
         if (x.getSource() == i) {
-            sql = "select category,count(category) from students\n" +
+            sql = "select category,count(category) as Students from students\n" +
                     "group by category;";
-            header="Category Students";
-            select(header,sql);
+            select(sql);
         }
         if (x.getSource() == j) {
             sql = "select students.studentId,studentName from students\n" +
@@ -198,8 +208,7 @@ public class Uiui extends JFrame implements ActionListener {
                     "  select * from kinList\n" +
                     "  where students.studentId = kinList.studentId\n" +
                     "  );";
-            header="Student_No Name";
-            select(header,sql);
+            select(sql);
         }
         if (x.getSource() == k) {
             sql = "select studentName,stuAdvisor.advisor,officeRoom.internalTel from students\n" +
@@ -211,65 +220,69 @@ public class Uiui extends JFrame implements ActionListener {
                     "  on stuAdvisor.advisor = advisor.name\n" +
                     "join officeRoom\n" +
                     "  on advisor.roomNo = officeRoom.roomNo;";
-            header="Student_Name Advisor Internal_Tel";
-            select(header,sql);
+            select(sql);
         }
         if (x.getSource() == l) {
-            sql = "select min(rentRate),max(rentRate),avg(rentRate) from allRooms;";
-            header="Minimal_Rent Maximum_rent Average_Rent";
-            select(header,sql);
+            sql = "select min(rentRate) as Minimal_Rent,max(rentRate) as Maximum_rent,avg(rentRate) as Average_Rent from allRooms;";
+            select(sql);
         }
         if (x.getSource() == m){
-            sql = "select hall.hallId,count(hall.hallId) from hall\n" +
+            sql = "select hall.hallId as hallNo,count(hall.hallId) as Room_Total from hall\n" +
                     "left join hallList\n" +
                     "  on hall.hallId = hallList.hallId\n" +
                     "group by hall.hallId";
-            header="Hall_No Total_Room(s)";
-            select(header,sql);
+            select(sql);
         }
         if (x.getSource() == n) {
             sql = "select staff.staffId,name,timestampdiff(year,birthDate,curdate()) as age,location from staff\n" +
                     "join staffName\n" +
                     "  on staff.staffId = staffName.staffId\n" +
                     "where timestampdiff(year,birthDate,curdate()) >= 60;";
-            header="Staff_No Name Age location";
-            select(header,sql);
+            select(sql);
         }
     }
 
 
-    private static void select(String in,String sql) {
-        String[] header = in.split(" ");
+    private static void select(String sql) {
         tx.setText(
                 "<html>" +
                 "<body>" +
                         "<table border=1>"
         );
-        tx.setText(tx.getText() + "<tr>");
-        int j = 0;
-        while(j<header.length) {
-            System.out.println(header[j] + "\t");//
-            tx.setText(tx.getText() + "<th>" + header[j] + "</th>");
-            j++;
-        }
-        System.out.print("\n");//
-        tx.setText(tx.getText() + "</tr>");
+//      String[] header = in.split(" ");
+//      tx.setText(tx.getText() + "<tr>");
+//      int j = 0;
+//      while(j<header.length) {
+//          System.out.println(header[j] + "\t");//
+//          tx.setText(tx.getText() + "<th>" + header[j] + "</th>");
+//          j++;
+//      }
+//      System.out.print("\n");
+//      tx.setText(tx.getText() + "</tr>");
         Connection conn = getConnection();
         Statement stmt;
         try {
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             int col = rs.getMetaData().getColumnCount();
+            tx.setText(tx.getText() + "<tr>");
+            for (int k = 0;k < col; k++){
+                String colname = rs.getMetaData().getColumnName(k+1);
+                tx.setText(tx.getText() + "<th>" + colname + "</th>");
+                //System.out.print(colname + "\t");
+            }
+            tx.setText(tx.getText() + "</tr>");
+
             while (rs.next()) {
                 tx.setText(tx.getText() + "<tr>");
                 for (int i = 1; i <= col; i++) {
-                    System.out.print(rs.getString(i) + "\t");//
+                    //System.out.print(rs.getString(i) + "\t");
                     tx.setText(tx.getText() + "<td>" + rs.getString(i) + "</td>");
                     //if ((i == 2) && (rs.getString(i).length() < 8)) {
                     //    System.out.print("\t");//
                     //}
                 }
-                System.out.print("\n");//
+                //System.out.print("\n");//
                 tx.setText(tx.getText() + "</tr>");
             }
             tx.setText(
