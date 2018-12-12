@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
 
-/**/
+
 public class Uiui extends JFrame implements ActionListener {
 
     private static JLabel tx = new JLabel();
@@ -15,7 +15,7 @@ public class Uiui extends JFrame implements ActionListener {
     private JButton f = new JButton("Inspections of unsatisfied configuration");
     private JButton g = new JButton("Students and their room number");
     private JButton h = new JButton("Students who is waiting");
-    private JButton i = new JButton("Total number of students in each catalog");
+    private JButton i = new JButton("Total number of students in each category");
     private JButton j = new JButton("Students who have no kin");
     private JButton k = new JButton("Advisors for each student");
     private JButton l = new JButton("Minimal, maximal and average rent of hall");
@@ -112,7 +112,6 @@ public class Uiui extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent x) {
         String sql;
-        String header;
         if (x.getSource() == a) {
             sql = "select hallId,staffName.name as Manager,hall.tel as Hall_Tel from hall\n" +
                     "join staff\n" +
@@ -249,16 +248,6 @@ public class Uiui extends JFrame implements ActionListener {
                 "<body>" +
                         "<table border=1>"
         );
-//      String[] header = in.split(" ");
-//      tx.setText(tx.getText() + "<tr>");
-//      int j = 0;
-//      while(j<header.length) {
-//          System.out.println(header[j] + "\t");//
-//          tx.setText(tx.getText() + "<th>" + header[j] + "</th>");
-//          j++;
-//      }
-//      System.out.print("\n");
-//      tx.setText(tx.getText() + "</tr>");
         Connection conn = getConnection();
         Statement stmt;
         try {
@@ -269,20 +258,14 @@ public class Uiui extends JFrame implements ActionListener {
             for (int k = 0;k < col; k++){
                 String colname = rs.getMetaData().getColumnName(k+1);
                 tx.setText(tx.getText() + "<th>" + colname + "</th>");
-                //System.out.print(colname + "\t");
             }
             tx.setText(tx.getText() + "</tr>");
 
             while (rs.next()) {
                 tx.setText(tx.getText() + "<tr>");
                 for (int i = 1; i <= col; i++) {
-                    //System.out.print(rs.getString(i) + "\t");
                     tx.setText(tx.getText() + "<td>" + rs.getString(i) + "</td>");
-                    //if ((i == 2) && (rs.getString(i).length() < 8)) {
-                    //    System.out.print("\t");//
-                    //}
                 }
-                //System.out.print("\n");//
                 tx.setText(tx.getText() + "</tr>");
             }
             tx.setText(
